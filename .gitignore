@@ -1,0 +1,24 @@
+# Xcode
+.DS_Store
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.playground/xcuserdata/
+
+# Swift Playground Book specific
+build/
+DerivedData/
+*.playgroundbook/Contents/Chapters/*/LiveView.playground/
+*.playgroundbook/Contents/Chapters/*/LiveView.playground/Sources/
+*.playgroundbook/Contents/Chapters/*/LiveView.playground/Resources/
+*.playgroundbook/Contents/Chapters/*/LiveView.playground/Contents.swift.swiftdoc
+*.playgroundbook/Contents/Chapters/*/LiveView.playground/Contents.swift.swiftmodule
+*.playgroundbook/Contents/Chapters/*/LiveView.playground/Contents.swift.dSYM
+*.playgroundbook/Contents/Chapters/*/LiveView.playground/Contents.swift.o
+*.playgroundbook/Contents/Chapters/*/LiveView.playground/Contents.swift.swiftinterface
+*.playgroundbook/Contents/Chapters/*/LiveView.playground/Contents.swift.swiftsourceinfo
+*.playgroundbook/Contents/Chapters/*/LiveView.playground/Contents.swift.swift-dependencies
+
+# Other common exclusions
+.build/
+.swiftpm/
+.vscode/
