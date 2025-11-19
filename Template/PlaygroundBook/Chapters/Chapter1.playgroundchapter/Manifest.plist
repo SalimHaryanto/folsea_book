@@ -3,10 +3,14 @@
 <plist version="1.0">
 <dict>
 	<key>Name</key>
-	<string>Playing with Shapes</string>
+	<string>Fraction Explorer</string>
+	<key>Subtitle</key>
+	<string>Understanding Equal Parts Through Play</string>
 	<key>Pages</key>
 	<array>
-		<string>Shapes.playgroundpage</string>
+		<string>FairShareSlicer.playgroundpage</string>
+		<string>ShapeSplitter.playgroundpage</string>
+		<string>FractionSorter.playgroundpage</string>
 	</array>
 </dict>
 </plist>

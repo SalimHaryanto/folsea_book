@@ -11,5 +11,10 @@ import PlaygroundSupport
 
 // Instantiate a new instance of the live view from BookCore and pass it to PlaygroundSupport.
 //PlaygroundPage.current.liveView = instantiateLiveView()
-PlaygroundPage.current.needsIndefiniteExecution = true
-PlaygroundPage.current.liveView = makeInteractiveSceneLiveView()
+public func setUpLiveView() -> PlaygroundLiveViewable {
+    return makeFractionSorterLiveView()
+}
+
+//public var liveViewConfiguration: PlaygroundLiveViewConfiguration {
+//    return .sideBySide
+//}
