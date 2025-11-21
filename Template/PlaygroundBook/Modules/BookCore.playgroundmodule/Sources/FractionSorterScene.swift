@@ -116,16 +116,25 @@ public final class FractionSorterScene: SKScene {
         }
     }
     
+    // MARK: - Fixed State Tracking
+    private var leftSideFraction: Fraction?
+    private var rightSideFraction: Fraction?
+
+    // MARK: - Updated checkPlacement
     private func checkPlacement(_ circle: FractionCircle) {
         let balanceY = size.height * 0.3
         
         if abs(circle.position.y - balanceY) < 100 {
             if circle.position.x < size.width / 2 {
+                // Placed on LEFT side of balance
                 circle.position = CGPoint(x: size.width * 0.35, y: balanceY)
                 leftPlaced = true
+                leftSideFraction = circle.fraction
             } else {
+                // Placed on RIGHT side of balance
                 circle.position = CGPoint(x: size.width * 0.65, y: balanceY)
                 rightPlaced = true
+                rightSideFraction = circle.fraction
             }
             
             circle.run(SKAction.sequence([
@@ -138,42 +147,71 @@ public final class FractionSorterScene: SKScene {
             compareAndTilt()
         }
     }
-    
+
+    // MARK: - Fixed compareAndTilt
     private func compareAndTilt() {
-        let leftFrac = leftCircle.fraction
-        let rightFrac = rightCircle.fraction
+        guard let leftFrac = leftSideFraction,
+              let rightFrac = rightSideFraction else { return }
         
         let leftValue = Double(leftFrac.numerator) / Double(leftFrac.denominator)
         let rightValue = Double(rightFrac.numerator) / Double(rightFrac.denominator)
         
         var tiltAngle: CGFloat = 0
-        var winner: FractionCircle?
+        var winnerFraction: Fraction?
         
         if leftValue > rightValue {
+            // Left side is HEAVIER, so it tilts DOWN (negative angle)
             tiltAngle = -0.15
-            winner = leftCircle
+            winnerFraction = leftFrac
         } else if rightValue > leftValue {
+            // Right side is HEAVIER, so it tilts DOWN (positive angle)
             tiltAngle = 0.15
-            winner = rightCircle
+            winnerFraction = rightFrac
+        } else {
+            // Equal fractions - balance stays level
+            tiltAngle = 0
         }
         
+        // Animate the balance tilt
         balanceScale.run(SKAction.rotate(toAngle: tiltAngle, duration: 0.5))
         
-        if let winner = winner {
-            winner.run(SKAction.sequence([
-                SKAction.wait(forDuration: 0.5),
-                SKAction.colorize(with: .systemYellow, colorBlendFactor: 0.5, duration: 0.3)
-            ]))
-            
-            showResult(winner: winner.fraction)
+        // Highlight the heavier fraction (wherever it is)
+        if let winner = winnerFraction {
+            highlightWinnerCircle(winner)
+            showResult(winner: winner)
+        } else {
+            showEqualResult()
         }
     }
-    
+
+    // MARK: - Helper to highlight the correct circle
+    private func highlightWinnerCircle(_ winnerFraction: Fraction) {
+        let winnerCircle = (leftCircle.fraction == winnerFraction) ? leftCircle : rightCircle
+        
+        winnerCircle?.run(SKAction.sequence([
+            SKAction.wait(forDuration: 0.5),
+            SKAction.colorize(with: .systemYellow, colorBlendFactor: 0.5, duration: 0.3)
+        ]))
+    }
+
+    // MARK: - Updated result display
     private func showResult(winner: Fraction) {
         let resultLabel = SKLabelNode(fontNamed: "Helvetica-Bold")
         resultLabel.fontSize = 40
         resultLabel.fontColor = UIColor(red: 0.0, green: 0.6, blue: 0.0, alpha: 1.0)
-        resultLabel.text = "\(winner.numerator)/\(winner.denominator) is BIGGER!"
+        resultLabel.text = "\(winner.numerator)/\(winner.denominator) is HEAVIER!"
+        resultLabel.position = CGPoint(x: size.width / 2, y: size.height * 0.15)
+        resultLabel.alpha = 0
+        addChild(resultLabel)
+        
+        resultLabel.run(SKAction.fadeIn(withDuration: 0.5))
+    }
+
+    private func showEqualResult() {
+        let resultLabel = SKLabelNode(fontNamed: "Helvetica-Bold")
+        resultLabel.fontSize = 40
+        resultLabel.fontColor = .systemBlue
+        resultLabel.text = "Equal! The fractions are the same!"
         resultLabel.position = CGPoint(x: size.width / 2, y: size.height * 0.15)
         resultLabel.alpha = 0
         addChild(resultLabel)
@@ -190,6 +228,16 @@ private struct Fraction {
     init(_ numerator: Int, _ denominator: Int) {
         self.numerator = numerator
         self.denominator = denominator
+    }
+}
+
+// MARK: - Fraction Equality Helper
+extension Fraction: Equatable {
+    static func == (lhs: Fraction, rhs: Fraction) -> Bool {
+        // Compare actual values to handle equivalent fractions
+        let lValue = Double(lhs.numerator) / Double(lhs.denominator)
+        let rValue = Double(rhs.numerator) / Double(rhs.denominator)
+        return abs(lValue - rValue) < 0.0001
     }
 }
 
