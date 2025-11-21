@@ -1,24 +1,34 @@
 import BookAPI
+import PlaygroundSupport
 
 /*:
- # The Fraction Size Sorter
+ # Compare Fractions
  
- Let's discover which fractions are bigger!
+ Which fraction is **BIGGER**?
  
- ## Instructions
+ On the right, you'll see two fraction circles and a balance scale.
+ Your job is to **drag each circle** onto the scale to find out which fraction is larger!
  
- 1. **TAP** a circle to zoom in and see the fraction
- 2. **DRAG** the circles onto the balance scale
- 3. Watch which side goes down (that fraction is bigger!)
- 4. **SWIPE up** from the bottom to try the next comparison
+ ## Your Task
  
- ### What to Learn
+ 1. Choose two fractions to compare by changing the numbers below.
+ 2. Drag the circles onto the balance scale.
+ 3. Watch which side goes down - that's the bigger fraction!
+ 4. Try different fractions to see how they compare.
  
- - When the bottom number is bigger, each piece is smaller
- - 1/2 is bigger than 1/4 (cutting into 2 pieces vs 4 pieces)
- - The balance shows you which fraction has more!
- 
- Start dragging the circles on the right!
+ ### Try These Challenges:
+ - Compare 1/2 and 3/4
+ - Compare 2/3 and 3/5
+ - Find two fractions that are equal (the scale stays balanced!)
+ - Try fractions with the same denominator (like 2/5 and 4/5)
  */
 
-startFractionSorterActivity()
+// Choose your first fraction:
+// Change these numbers to pick different fractions!
+let firstFraction = Fraction(1, 2)   // 1/2
+
+// Choose your second fraction:
+let secondFraction = Fraction(3, 4)  // 3/4
+
+// Show the fraction comparison scene
+showFractionComparison(left: firstFraction, right: secondFraction)
